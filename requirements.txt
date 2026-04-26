@@ -1,0 +1,5 @@
+google-cloud-aiplatform
+requests
+python-dotenv
+fastapi
+uvicorn
