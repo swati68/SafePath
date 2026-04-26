@@ -203,7 +203,12 @@ function App() {
     const utterance = new SpeechSynthesisUtterance(text);
     
     const voices = window.speechSynthesis.getVoices();
+    // Prioritize high-quality, natural-sounding female voices
     const premiumVoice = voices.find(v => 
+      v.name.includes("Moira") || 
+      v.name.includes("Fiona") ||
+      v.name.includes("Karen") ||
+      v.name.includes("Victoria") ||
       v.name.includes("Samantha") || 
       v.name.includes("Premium") || 
       v.name.includes("Google UK English Female") ||
@@ -211,8 +216,9 @@ function App() {
     );
     if (premiumVoice) utterance.voice = premiumVoice;
     
-    utterance.rate = 0.95; 
-    utterance.pitch = 1.0;
+    // Tweak rate and pitch for a "sweeter" and less robotic delivery
+    utterance.rate = 0.92; // Slightly slower for natural pacing
+    utterance.pitch = 1.2; // Slightly higher pitch for a sweeter tone
     utterance.onend = () => setIsPlayingVoice(false);
     
     setIsPlayingVoice(true);
