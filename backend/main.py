@@ -2,6 +2,8 @@ import os
 import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import routing
 import scoring
@@ -34,7 +36,7 @@ async def parse_voice(request: VoiceRequest):
     from google import genai
     import json
     
-    client = genai.Client(vertexai=True, project='cinemamatch', location='us-central1')
+    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
     
     prompt = f"""
     Extract the travel intent from this user voice transcript: "{request.transcript}"
@@ -110,5 +112,20 @@ async def get_routes(request: RouteRequest):
         "explanation": explanation
     }
 
+# Mount static files at the end so API routes take precedence
+frontend_dist = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "dist")
+if os.path.isdir(frontend_dist):
+    app.mount("/assets", StaticFiles(directory=os.path.join(frontend_dist, "assets")), name="assets")
+    
+    @app.get("/{full_path:path}")
+    async def serve_frontend(full_path: str):
+        # Serve specific files if they exist in dist
+        file_path = os.path.join(frontend_dist, full_path)
+        if os.path.isfile(file_path):
+            return FileResponse(file_path)
+        # Otherwise fallback to index.html for SPA routing
+        return FileResponse(os.path.join(frontend_dist, "index.html"))
+
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)

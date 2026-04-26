@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 def generate_explanation(safest_route, fastest_route, mode):
-    client = genai.Client(vertexai=True, project='cinemamatch', location='us-central1')
+    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
     
     safest_hazards = [h["type"] for h in safest_route["hazards"]]
     fastest_hazards = [h["type"] for h in fastest_route["hazards"]]
