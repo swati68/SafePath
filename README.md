@@ -7,11 +7,12 @@ SafePath Live is an AI-powered, safety-first navigation application designed to 
 - Riddhi Shrama
 - Simranjeet Singh
 
+**Deployed Project: https://safepath-78092976204.us-central1.run.app/**
+
 ## ✨ Key Features
 
 - **Safety-First Routing**: Utilizes a custom heuristic engine to score Google Maps routes based on live hazard data and historical NYPD complaints.
 - **Live NYC Open Data Integration**: Dynamically fetches Year-To-Date (YTD) NYPD complaint statistics to penalize routes traveling through high-crime corridors.
-- **Interactive Voice Assistant**: Integrated speech recognition allows users to verbally request routes. The app parses travel intent (Origin, Destination, Mode) using Google Gemini 2.5 Flash.
 - **Conversational Insights**: The AI engine analyzes the route options and uses the browser's Text-to-Speech (TTS) engine to verbally explain why the recommended route is the safest.
 - **Visual Safety Indicators**: Routes are color-coded in a premium UI with highly-detailed route metrics (Lighting, Weather, Time-of-day risks).
 - **Real-Time Location**: One-click geolocation tracking to set your starting point securely over HTTPS.
