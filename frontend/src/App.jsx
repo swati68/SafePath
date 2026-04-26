@@ -20,6 +20,9 @@ function App() {
   const destAutocomplete = useRef(null)
   const recognitionRef = useRef(null)
 
+  // API Base URL - Updated to local network IP for mobile testing
+  const API_BASE_URL = 'http://10.20.119.38:8000';
+
   // Auto-search when mode changes
   useEffect(() => {
     if (window.google && origin && destination && !loading) {
@@ -28,7 +31,7 @@ function App() {
   }, [mode])
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/config')
+    fetch(`${API_BASE_URL}/api/config`)
       .then(res => res.json())
       .then(config => {
         if (!window.google && config.googleMapsApiKey) {
@@ -147,7 +150,7 @@ function App() {
     recognition.onresult = async (event) => {
       const transcript = event.results[0][0].transcript;
       try {
-        const res = await fetch('http://localhost:8000/api/parse-voice', {
+        const res = await fetch(`${API_BASE_URL}/api/parse-voice`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ transcript })
@@ -229,7 +232,7 @@ function App() {
     setIsPlayingVoice(false)
     
     try {
-      const res = await fetch('http://localhost:8000/api/routes', {
+      const res = await fetch(`${API_BASE_URL}/api/routes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ origin: searchOrigin, destination: searchDest, mode: searchMode })
